@@ -12,8 +12,10 @@
 時間序列、鏡像資料污染、要 URL-encode 的中括號、藏起來的免登入端點、回應最外層是 list、
 `filters` 參數靜默失效……）。
 
-國際上已有很好的**全球型**清單（見 [Related](#related-lists)），但**沒有台灣專屬**的 —— 它們
-不涵蓋 ODB、CWA、台電、環境部、水利署、漁業署、海保署、TCCIP 這些台灣機關。這份補這個洞。
+國際上已有全球型的開放資料清單（見 [Related](#related-lists)）；台灣本地也有一些較一般性的
+政府資料清單與聚合工具，同樣整理在 Related。據查證，目前尚未有專注於環境、氣候、海洋，
+並替每個來源附上實測存取方法與踩坑紀錄的台灣清單，這份補上這個位置，涵蓋 ODB、CWA、台電、
+環境部、水利署、漁業署、海保署、TCCIP 等機關。
 
 > [!TIP]
 > 這份清單最不一樣的地方在最後兩節：[混淆稽核案例](#worked-examples--混淆稽核案例)把這些資料
@@ -240,10 +242,18 @@
 - **相關性常是 misinterpretation** —— 見上一節四個案例。宣稱發現前，先過 [CONFOUND-AUDIT.md](https://github.com/thc1006/taiwan-earthquake-fab/blob/main/CONFOUND-AUDIT.md)。
 
 ## Related lists
+
+**全球 / 國際**
 - [pangeo-data/awesome-open-climate-science](https://github.com/pangeo-data/awesome-open-climate-science)
 - [Inria-Chile/awesome-ocean-ai-data](https://github.com/Inria-Chile/awesome-ocean-ai-data)
 - [monocilindro/Awesome-Hydrospatial](https://github.com/monocilindro/Awesome-Hydrospatial)
 - [KKulma/climate-change-data](https://github.com/KKulma/climate-change-data)
+
+**台灣（範圍不同或較一般）** —— 這幾份和本清單互補，不重疊：
+- [onlinemad/awesome-opendata-taiwan-gov](https://github.com/onlinemad/awesome-opendata-taiwan-gov) — 台灣政府開放資料與 API，泛用取向
+- [lun916/awesome-taiwan-business-data](https://github.com/lun916/awesome-taiwan-business-data) — 公司、商業登記、政府標案、法律案件
+- [mosdeo/List_of_Taiwan_OpenData_Diamonds_and_Rust](https://github.com/mosdeo/List_of_Taiwan_OpenData_Diamonds_and_Rust) — 政府開放資料的踩雷筆記
+- [cm-ailab-cc-plugins/plugin-twinkle-hub](https://github.com/cm-ailab-cc-plugins/plugin-twinkle-hub) — 台灣開放資料的 MCP 聚合端點（52,960+ 資料集）
 
 ## Contributing
 歡迎 PR。原則：每個來源要**實際測過**，附存取方法與（若有）雷。遵循 [awesome 準則](https://github.com/sindresorhus/awesome/blob/main/awesome.md)。

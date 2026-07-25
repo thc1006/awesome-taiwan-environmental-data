@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+title: "Awesome Taiwan Environmental Data"
+message: "如果這份清單對你的研究或專案有幫助，歡迎依下列方式引用。"
+type: dataset
+abstract: >-
+  台灣海洋、氣候、水文、能源、空品、地震開放資料的策展清單，
+  每個來源都附上實測過的存取方法與踩坑紀錄。
+authors:
+  - name: "thc1006"
+repository-code: "https://github.com/thc1006/awesome-taiwan-environmental-data"
+url: "https://github.com/thc1006/awesome-taiwan-environmental-data"
+license: CC0-1.0
+date-released: "2026-07-25"
+keywords:
+  - taiwan
+  - open-data
+  - ocean
+  - climate
+  - air-quality
+  - energy
+  - earthquake
