@@ -246,7 +246,7 @@ list、日期參數靜默失效）。有些條目仍是端點範本而非可直�
 
 ## Worked Examples · 混淆稽核案例
 這節是本清單的靈魂。用上面這些資料做了四個跨領域題目，得到四種不同的推論失敗：三個是天真的
-因果解讀站不住（季節同步、順流向梯度、會計恆等式），一個是資料檢定力不足、根本測不到，這不是
+因果解讀站不住（季節同步、順風向梯度、會計恆等式），一個是資料檢定力不足、根本測不到，這不是
 「效果不存在」，是「測不到」。每個 repo 都把會騙人的那一步留在程式碼裡可重跑，並附一份共用的
 [混淆稽核清單 CONFOUND-AUDIT.md](https://github.com/thc1006/taiwan-earthquake-fab/blob/main/CONFOUND-AUDIT.md)。
 
@@ -254,7 +254,7 @@ list、日期參數靜默失效）。有些條目仍是端點範本而非可直�
 |---|---|---|
 | [taiwan-solar-dimming](https://github.com/thc1006/taiwan-solar-dimming)（NASA POWER + 台電光電） | 氣膠 β = −85，p < 0.0001 | 季節同步（冬春氣膠高、發電效率也剛好低） |
 | [taiwan-earthquake-fab](https://github.com/thc1006/taiwan-earthquake-fab)（USGS + TWSE/MOPS） | 點估計為負且合理 | 檢定力不足（月營收 MDE ≈ 11 pp，實際衝擊 1.3%） |
-| [taiwan-riverbed-dust](https://github.com/thc1006/taiwan-riverbed-dust)（環境部 aqx_p_488） | 下風 +0.65，p = 0.0001 | 順流向空間梯度（陰性對照與位移安慰劑戳破） |
+| [taiwan-riverbed-dust](https://github.com/thc1006/taiwan-riverbed-dust)（環境部 aqx_p_488） | 下風 +0.65，p = 0.0001 | 順風向空間梯度（陰性對照與位移安慰劑戳破） |
 | [taiwan-vre-drought](https://github.com/thc1006/taiwan-vre-drought)（台電供需） | 相關 r = +0.51 | 會計恆等式（再生能源本就是供電能力的組成） |
 
 四題全部免金鑰、可重跑。它們同時也是這份清單各來源的壓力測試：每個 API 都被實際拿去做過分析。
