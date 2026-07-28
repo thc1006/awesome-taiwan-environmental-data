@@ -7,9 +7,10 @@
 > hydrology, energy, air quality and seismic, with verified access recipes and the
 > gotchas the docs don't tell you.
 
-大多數 awesome-list 只給連結。這份不一樣：每個來源都實際打過，附上能直接跑的 `curl`／Python
-片段、時空涵蓋、格式、授權，以及那些文件不會告訴你的雷（氣候平均偽裝成時間序列、鏡像資料
-污染、要 URL-encode 的中括號、藏起來的免登入端點、回應最外層是 list、`filters` 參數靜默失效）。
+大多數 awesome-list 只給連結。這份不一樣：每個來源都實際打過，附上端點範本與部分已驗證的
+`curl`／Python 範例、時空涵蓋、格式，並盡量標註授權，以及那些文件不會告訴你的雷（氣候平均
+偽裝成時間序列、鏡像資料污染、要 URL-encode 的中括號、藏起來的免登入端點、回應最外層是
+list、日期參數靜默失效）。有些條目仍是端點範本而非可直接複製執行的完整範例，請以各條備註為準。
 
 國際上已有全球型的開放資料清單（見 [Related](#related-lists)）；台灣本地也有一些較一般性的
 政府資料清單與聚合工具，同樣整理在 Related。據查證，目前尚未有專注於環境、氣候、海洋，並替
@@ -18,8 +19,8 @@
 
 > [!TIP]
 > 這份清單最不一樣的地方在最後兩節。[混淆稽核案例](#worked-examples--混淆稽核案例)把這些資料
-> 串成四個真實的「漂亮但錯誤」案例，每一個的 p 值都很漂亮，卻都撐不過稽核；接著是
-> [踩過的坑](#gotchas--lessons)。資料很多人給，會騙人的地方很少人講。
+> 串成四個真實案例：有的天真相關撐不過混淆或會計耦合，有的則是資料檢定力不足、根本測不到；
+> 接著是 [踩過的坑](#gotchas--lessons)。資料很多人給，會騙人的地方很少人講。
 
 > [!NOTE]
 > 圖例：✅ 本清單實測可用 · 🔑 需免費註冊或金鑰 · ⚠️ 有雷（見備註）· 📊 網格／NetCDF · 🐟 生物
@@ -59,7 +60,8 @@
 - ✅ **CTD／SADCP API**：`https://ecodata.odb.ntu.edu.tw/api/ctd`（溫鹽剖面）、`/api/sadcp`（海流
   u／v），逐深度。⚠️ 是氣候平均，不是時間序列（`time_period` 只有 "0"，年份參數被忽略）。
 - ✅ **匿名 ticket**：`POST https://ocean.cwa.gov.tw/V2/menu_process/get_api_config` 回一個長效 JWT，
-  供免登入呼叫 `oceanapi.cwa.gov.tw/restapi/v2`。
+  供免登入呼叫 `oceanapi.cwa.gov.tw/restapi/v2`。⚠️ 這是未文件化的網頁內部端點，不是官方公開、
+  受版本管理的 API，可能隨前端改版失效；不要把 token commit 進版本庫，正式服務請改用官方下載或公開 API。
 - GEBCO 水深、GLODAP 海洋碳、WOA23、Argo、tide、cruiseAPI，見
   [@cywhale 的 repos](https://github.com/cywhale?tab=repositories)。
 - [Hidy Viewer 2](https://odbview.oc.ntu.edu.tw/hidy/)（互動地圖）、
@@ -71,7 +73,8 @@
 [交通部中央氣象署](https://www.cwa.gov.tw/)。
 
 - ✅ **CWA 開放資料 S3 bucket（完全公開、可列目錄）**：
-  `https://cwaopendata.s3.ap-northeast-1.amazonaws.com/?list-type=2`，5,875 個物件，免金鑰。
+  `https://cwaopendata.s3.ap-northeast-1.amazonaws.com/?list-type=2`，免金鑰。⚠️ `ListObjectsV2`
+  單次最多回 1,000 個物件，要列完整個 bucket（實測約數千個）得用 `continuation-token` 分頁。
   海象四支：`O-B0069`（大潮）、`O-B0070`（長浪）、`O-B0076`（即時海況站表）、`O-B0079`（日均海溫）。
 - ✅ **站級海象觀測（免登入）**：
   `POST https://ocean.cwa.gov.tw/V2/map_common/get_station_info`（`station_id`、`kind=tide|buoy`、
@@ -84,7 +87,8 @@
   預報產品皆在此。
 - ✅ **海象測站清單**：
   [`station_info.html`](https://oceanapi.cwa.gov.tw/restapi/v2/static/station/station_info.html)，
-  55 站（33 潮位 + 14 浮標 + 2 波浪），含起始日（基隆潮位站 1946 起），其中 49 站量海溫。
+  分潮位站、資料浮標、波浪站三類，多數站含海溫觀測欄位。⚠️ 站表含已停測站，以「資料結束日期」
+  區分目前運作與歷史站；站數會變動，請以即時站表為準，別把某個當下的總數寫死。
 - [即時海況頁](https://www.cwa.gov.tw/V8/C/M/OBS_Marine.html)、
   [海洋觀測資料](https://climate.cwa.gov.tw/OceanObservation)、
   [ENSO 影響](https://climate.cwa.gov.tw/ENSO)。
@@ -103,8 +107,8 @@
   有效蓄水量、蓄水率、水位，每小時。⚠️ 即時為主，歷史走
   [災防 portal](https://fhy.wra.gov.tw/fhyv2/monitor/reservoir)。
 - ⚠️ **河川流量**：`fhy.wra.gov.tw` 首頁在，但直接猜的水情 API 端點會 503；`data.wra.gov.tw`
-  一度 DNS 不解析。乾旱、低流量的處理，短期可用 NASA POWER 降水（見
-  [衛星與再分析](#satellite--reanalysis)）當代理。
+  一度 DNS 不解析。在拿到實測流量前，NASA POWER 降水只能當氣象乾旱的粗略 covariate，不是河川
+  流量的代理（流量還受集水面積、前期土壤含水、蒸發散、水庫調度與降水到流量的 lag 影響）。
 
 ## Energy & Grid · 台電
 [台灣電力公司開放資料](https://www.taipower.com.tw/tc/page.aspx?mid=5554)。核心是一組
@@ -132,12 +136,12 @@
   `so2`、`co`、`o3`、`no2`、`windspeed`、`winddirec`、`longitude`、`latitude`、`siteid`、
   `datacreationdate`。有風向與座標，可做「下風」空間分析。`sort=datacreationdate` 可回溯到 2016-11。
 - ✅ **即時 AQI**：`aqx_p_432`（24 欄，逐時全站）。細懸浮微粒 PM2.5 為 `aqx_p_02`。
-- 🔑➡️✅ **拿現行金鑰的正確方法**：舊教學用的公開 key（`9be7b239-…`）已失效（回 500）。現行可用
-  金鑰由環境部自己公告在 data.gov.tw 的下載欄位：
+- 🔑 **金鑰**：正式做法是到平台免費註冊自己的 API key（官方要求並妥善保管）。急用時有個非正式
+  fallback：環境部在 data.gov.tw 的下載欄位公告了可用 key，
   `GET https://data.gov.tw/api/v2/rest/dataset/40448` 的 `result.distribution[].resourceDownloadUrl`
-  內含一把可用的 `api_key`（AQI；同一把也開得了 `aqx_p_488`）；PM2.5 見
-  [dataset 34827](https://data.gov.tw/api/v2/rest/dataset/34827)。金鑰可能輪替，用這招取即時的；
-  長期建議自行到平台免費註冊。
+  內含一把（AQI，同一把也開得了 `aqx_p_488`），PM2.5 見
+  [dataset 34827](https://data.gov.tw/api/v2/rest/dataset/34827)。這把是公用、可能輪替、不保證
+  持續可用，正式使用請換成自己註冊的 key。
 - 📦 **多年份批量**：API 逐頁太慢（見下方雷），批量走
   [airtw 歷史資料](https://airtw.moenv.gov.tw/CHT/Query/His_Data.aspx) 的分區逐年封存
   （2018–2025，Google Drive）。
@@ -155,7 +159,8 @@
 
 - ✅ **每日個股股價**：證交所
   `https://www.twse.com.tw/exchangeReport/STOCK_DAY?response=json&date=YYYYMM01&stockNo=2330`，
-  免金鑰，一次一個月，含開高低收與量。⚠️ 日期是民國年（`113/04/01`）。
+  免金鑰，一次一個月，含開高低收與量。⚠️ 請求參數 `date` 用西元 `YYYYMMDD`（例 `20260401`），
+  但回傳資料裡的交易日期是民國年（例 `115/04/01`），兩者別搞混。
 - ✅ **上市公司月營收（歷史）**：公開資訊觀測站靜態頁
   `https://mopsov.twse.com.tw/nas/t21/sii/t21sc03_{民國年}_{月}.html`（`sii` 為上市，`otc` 為上櫃）。
   ⚠️ Big5 編碼；⚠️ 要用 `mopsov`.twse.com.tw，`mops.twse.com.tw/nas/...` 那條會 404。
@@ -188,9 +193,11 @@
   分析的主力。
   `https://power.larc.nasa.gov/api/temporal/daily/point?parameters=ALLSKY_SFC_SW_DWN,CLRSKY_SFC_SW_DWN,CLOUD_AMT,AOD_55,WS10M,T2M,PRECTOTCORR&community=RE&longitude=&latitude=&start=YYYYMMDD&end=YYYYMMDD&format=JSON`
   （全天空、晴空日射量、雲量、550nm 氣膠 AOD、風速、氣溫、降水）。⚠️ 缺值以 -999 表示；⚠️
-  `AOD_55` 是 MERRA-2（約 0.5° 粗網格），相距 110 km 的兩點可能回完全相同的序列；⚠️
-  `ALLSKY_SFC_SW_DWN` 是用 AOD 模擬算出來的，別拿它回歸 AOD（循環論證，見
-  [混淆稽核案例](#worked-examples--混淆稽核案例)）。
+  `AOD_55` 是 MERRA-2（約 0.5° 粗網格），相距 110 km 的兩點可能回完全相同的序列；⚠️ Daily API
+  的時間基準預設是地方時（LST）而非 UTC，跨台電「日」資料合併時要對齊時基；⚠️
+  `ALLSKY_SFC_SW_DWN` 主要源自 CERES SYN1deg 衛星輻射產品（不是直接由 AOD 算出），但氣膠是其
+  輻射傳輸的輸入之一，所以它與 AOD 並非獨立量測。要估氣膠對發電的影響，結果變數請用獨立電表或
+  發電資料，別拿 POWER 日射量當獨立驗證（見[混淆稽核案例](#worked-examples--混淆稽核案例)）。
 - **[TASA 國家太空中心](https://www.tasa.org.tw/)**：FORMOSAT 系列、Triton（2023，GNSS 反射估海面
   風）。⚠️ 以任務為主，無明顯海洋產品開放 API。
 
@@ -238,8 +245,9 @@
   （geo、bio、mhw、timeseries）。
 
 ## Worked Examples · 混淆稽核案例
-這節是本清單的靈魂。用上面這些資料做了四個跨領域題目，四個天真估計都很漂亮，四個都是假的。
-每個 repo 都把會騙人的那一步留在程式碼裡可重跑，並附一份共用的
+這節是本清單的靈魂。用上面這些資料做了四個跨領域題目，得到四種不同的推論失敗：三個是天真的
+因果解讀站不住（季節混淆、順流向梯度、會計耦合），一個是資料檢定力不足、根本測不到——這不是
+「效果不存在」，是「測不到」。每個 repo 都把會騙人的那一步留在程式碼裡可重跑，並附一份共用的
 [混淆稽核清單 CONFOUND-AUDIT.md](https://github.com/thc1006/taiwan-earthquake-fab/blob/main/CONFOUND-AUDIT.md)。
 
 | 題目（用到的來源） | 天真結果 | 死因 |
@@ -258,19 +266,21 @@
 - ODB OISST OPeNDAP 鏡像有 0.0 掉值污染（近期月份達 39%）、缺月，且僅 2018 年起；長序列改用
   NOAA ERDDAP。
 - ODB 的 CTD／SADCP 是氣候平均，不是時間序列，錨不了特定事件。
-- 固定基期的 Hobday MHW／MCS 偵測在暖化下會壞：冷側事件消失、熱側飽和；改用隨趨勢移動的基期。
+- 固定基期與移動基期回答不同問題：固定基期（Hobday 原定義）給跨期、跨區可比的長期暴露，暖化下
+  MHW 會趨於飽和、冷側事件變少；移動或去趨勢基期看的是相對當時氣候的異常。依問題選基期，必要時兩種都報。
 - NOAA PSL OPeNDAP 併發時容易 DAP failure；改走 ERDDAP 分塊（9 年以內、括號 URL-encode）較穩。
 - 潮位站海溫是港內 0–5 m 的水溫，不代表外海。
 
 **空品、能源、財經（新）**
 - 環境部 API 回應的最外層是 list，不是 `{"records":[…]}`，直接當陣列處理。
-- 環境部 `filters` 參數對日期靜默失效（給了 2021 卻回當日資料）；歷史用 `offset` 分頁（offset
-  對日期近乎線性，約每月 6 ~ 7 萬筆），多年份改走 airtw 分年封存。
+- 環境部 aqx_p_488 的伺服器端日期篩選不可靠：實測 `filters` 與官方文件所列的 `year_month` 都回
+  當日資料、不回指定月份。歷史請用 `offset` 分頁（offset 對日期近乎線性，約每月 6 ~ 7 萬筆），
+  多年份改走 airtw 分年封存。
 - 環境部舊公開金鑰已失效（回 500）；現行金鑰在 data.gov.tw 的 `resourceDownloadUrl` 欄位裡。
 - 台電十分鐘級發電只發布了 2026 Q1 一檔（`002.json` 起皆 404）；舊的 `genary.json` 回 0 bytes。
 - 月營收要用 `mopsov`.twse.com.tw（`mops.` 會 404）；TWSE OpenAPI 只給當月快照；日期是民國年。
-- NASA POWER 的 `ALLSKY` 是用 AOD 算出來的，別拿它回歸 AOD（循環）；`AOD_55` 網格粗，相鄰兩點
-  可能同值。
+- NASA POWER 的 `ALLSKY`（主要源自 CERES SYN1deg）與 AOD 共用氣膠輸入、並非獨立量測，別拿它
+  回歸 AOD 當獨立驗證；`AOD_55` 網格粗，相鄰兩點可能同值。
 - `data.cdc.gov.tw` 有 TLS 憑證錯誤；`data.gov.tw` 搜尋頁是 JS shell，改用 `api/v2/rest/dataset/{id}`
   以 ID 取。
 
