@@ -52,6 +52,7 @@
 - **[Raingel/historical_weather](https://github.com/Raingel/historical_weather)**：CWA CODIS 陸上測站逐時，GitHub 上機器可讀 CSV、每日更新，可補救滾動視窗會掉的資料。
 - **[CODiS](https://codis.cwa.gov.tw/)**：CWA 氣候觀測資料查詢（陸上站歷史，含澎湖浮標 SST 2007 起）。
 - **[農業氣象觀測網](https://agr.cwa.gov.tw/)**：農業站，只有氣溫、土溫，無水溫。
+- **[台灣五測站氣候月均值 CSV](https://github.com/CrabMen/nongminli.tw/blob/main/data/taiwan-climate-normals-five-stations-1991-2020.csv)**（nongminli.tw 整理）：CWA 1991–2020 年月平均表的長表，5 站 × 8 指標 × 12 個月；適合比較長期季節差異，非逐日觀測或預報。
 
 ## Water Resources
 [經濟部水利署](https://www.wra.gov.tw/)。
