@@ -43,6 +43,12 @@
 [`station_info.html`](https://oceanapi.cwa.gov.tw/restapi/v2/static/station/station_info.html)：分潮位站、資料浮標、波浪站三類，多數站含海溫欄位。
 注意：站表含已停測站，以「資料結束日期」欄區分目前運作與歷史站；站數會變動，別把某個當下的總數寫死。
 
+## Historical Observations
+
+**台灣五測站氣候月均值 CSV**（[資料與出典](https://github.com/CrabMen/nongminli.tw/tree/main/data)）
+`curl -fsSL https://raw.githubusercontent.com/CrabMen/nongminli.tw/main/data/taiwan-climate-normals-five-stations-1991-2020.csv -o taiwan-climate-normals.csv`，免金鑰；UTF-8 CSV，共 480 筆，欄位含站名、月份、指標、數值、單位與統計期。測站為臺北、臺中、高雄、花蓮、恆春，統計期為 1991–2020 年。
+注意：這是 nongminli.tw 依 [CWA 氣候月平均資料](https://www.cwa.gov.tw/V8/C/C/Statistics/monthlymean.html)整理的長表，不是 CWA 即時 API；月均值不能當成某日天氣或未來預報。高雄對應原表的舊高雄站。再利用時要同時保留原資料來源與 [整理者的授權說明](https://github.com/CrabMen/nongminli.tw/blob/main/data/DATA-LICENSE.md)。本清單於 2026-11-15 實際下載並核對欄位、5 站、8 指標與 480 筆。
+
 ## Water Resources
 
 **水庫即時水情**（[data.gov.tw/45501](https://data.gov.tw/dataset/45501)）
